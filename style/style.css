@@ -95,7 +95,7 @@ h1{
     background-color: #FCF9F9;
     border-radius: 20px;
     box-shadow: 6px 10px 13px 0 #EBD0D0;
-
+    margin-bottom: 46px;
 }
 
 .calculator p{
@@ -146,6 +146,27 @@ h1{
 }
 
 footer{
+    color: #13371D;
     font-weight: 500;
     font-size: 14px;
+}
+footer a{
+    color: #B2BA51;
+    text-decoration: none;
+}
+
+@media (max-width: 400px) {
+    .calculator{
+        width: 286px;
+        height: 493px;
+    }
+    .dial{
+        gap: 7px;
+    }
+
+    .calculator .dial button{
+        width: 56px;
+        height: 56px;
+    }
+    
 }
