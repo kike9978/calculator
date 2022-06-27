@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+
+/* RESET CSS */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+img, iframe {
+  vertical-align: bottom;
+  max-width: 100%;
+}
+
+input, textarea, select {
+  font: inherit;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* END OF RESET CSS */
+html,
+body{
+    height: 100%;
+    width: 100%;
+}
+
+body{
+    background-color: #FCEDED;
+    font-family: "Montserrat", Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+h1{
+    color: #A66122;
+    font-weight: 500;
+    font-size: 32px;
+    margin-bottom: 25px;
+}
+
+.calculator{
+    width: 355px;
+    height: 598px;
+    padding: 31px 19px 25px 19px;
+    background-color: #FCF9F9;
+    border-radius: 20px;
+    box-shadow: 6px 10px 13px 0 #EBD0D0;
+
+}
+
+.calculator p{
+    text-align: right;
+    color: #13371D;
+    font-size: 16px;
+    margin-bottom: 11px;
+    
+}
+.calculator h2{
+    margin-bottom: 25px;
+    text-align: right;
+    font-weight: 600;
+    font-size: 64px;
+    color: #9BB8A3;
+}
+.divider{
+    height: 3px;
+    width: 100%;
+    margin-bottom: 25px;
+    background-color: #13371D;
+}
+
+.dial{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 13px;
+}
+
+.calculator .dial button{
+    width: 69px;
+    height: 69px;
+    border-radius: 24px;
+    background-color: #F0C0C0;
+    border-style: none;
+    font-size: 24px;
+    vertical-align: middle;
+}
+
+.calculator .dial button:hover{
+    
+    cursor: pointer;
+}
+.calculator .dial button p{
+    margin-bottom: 0;
+    text-align: center;
+    color: #A66122;
+}
+
+footer{
+    font-weight: 500;
+    font-size: 14px;
+}
