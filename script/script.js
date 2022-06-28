@@ -9,39 +9,58 @@ clearBtn.addEventListener("click", clear);
 
 const calculator = {
 
+    opperatorSelected: false,
+    firstNum: "",
+    opperator: "",
+    secondNum: "",
+
 };
 
-let firstNum = 0;
-let secondNum = 0;
-let opperatorSelected = false;
-let opperator = "";
+
 
 
 buttons.forEach(btn => btn.addEventListener("click", () => {
+    // Clear button behaviour
     if (btn.getAttribute("data-btn") === "clear"){
         return;
     };
+
+    // Equals button behaviour
     if (btn.getAttribute("data-btn") === "equals"){
         operate();
         return;
     }
 
+
+    // Operator buttons behaviour
+
     if (btn.getAttribute("data-btn") === "opperator"){
-        opperatorSelected = true;
-        opperator = parseInt(btn.textContent);
-        console.log({opperator});
+        if(calculator.opperatorSelected){
+            return;
+        }
+        calculator.opperatorSelected = true;
+        calculator.opperator = btn.textContent;
+        result.textContent = calculator.firstNum + calculator.opperator;
+        
+
+        console.log(calculator.opperator);
         return;
     }
 
-
+    // Number buttons behaviour
     if(btn.getAttribute("data-btn") === "number"){
-        if (!opperatorSelected){
-            firstNum += btn.textContent;
-            console.log({firstNum});
+        if (!calculator.opperatorSelected){
+
+            calculator.firstNum += btn.textContent;
+            result.textContent = calculator.firstNum;
+            console.log(calculator.firstNum);
             return;
         }
-        secondNum += parseInt(btn.textContent);
-        console.log({secondNum});
+
+        calculator.secondNum += parseInt(btn.textContent);
+        result.textContent = calculator.firstNum + calculator.opperator + calculator.secondNum;
+        preview.textContent = operate(calculator.firstNum,calculator.secondNum,calculator.opperator);
+        console.log(calculator.secondNum);
         return;
     }
     console.log(btn.textContent)
@@ -75,9 +94,22 @@ function pow(base, pow){
 }
 
 function operate(firstNum, secondNum, opperand){
-    if (opperand === "add"){
-        return console.log(add(firstNum, secondNum));
+    if (opperand === "+"){
+        return add(parseInt(firstNum), parseInt(secondNum));
     }
+    if (opperand === "−"){
+        return substract(parseInt(firstNum), parseInt(secondNum));
+    }
+    if (opperand === "×"){
+        return multiply(parseInt(firstNum), parseInt(secondNum));
+    }
+    if (opperand === "÷"){
+        return divide(parseInt(firstNum), parseInt(secondNum));
+    }
+    if (opperand === "xy"){
+        return pow(parseInt(firstNum), parseInt(secondNum));
+    }
+    
 }
 
 
@@ -121,9 +153,10 @@ function registerOnPreview(){
 function clear(){
     preview.textContent = "0";
     result.textContent = "0";
-    opperatorSelected = false;
-    firstNum = "";
-    secondNum = "";
+    calculator.opperatorSelected = false;
+    calculator.firstNum = "";
+    calculator.opperator = "";
+    calculator.secondNum = "";
 }
 
 window.addEventListener("keyup", removeTransition);
