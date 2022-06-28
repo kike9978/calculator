@@ -107,10 +107,12 @@ h1{
     
 }
 .calculator h2{
+    margin-top: 30px;
     margin-bottom: 25px;
+
     text-align: right;
     font-weight: 600;
-    font-size: 64px;
+    font-size: 32px;
     color: #9BB8A3;
 }
 .divider{
