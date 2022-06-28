@@ -8,18 +8,17 @@ const clearBtn = document.querySelector("[data-btn=clear]");
 clearBtn.addEventListener("click", clear);
 
 const calculator = {
-
     opperatorSelected: false,
     firstNum: "",
     opperator: "",
     secondNum: "",
-
 };
 
 
 
 
 buttons.forEach(btn => btn.addEventListener("click", () => {
+
     // Clear button behaviour
     if (btn.getAttribute("data-btn") === "clear"){
         return;
@@ -27,7 +26,12 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
 
     // Equals button behaviour
     if (btn.getAttribute("data-btn") === "equals"){
-        operate();
+
+
+
+        console.log(`Soy first num y : ${!calculator.firstNum}, yo opeartor y: ${!calculator.opperator} y yo el secondNum: ${!calculator.secondNum}`);
+
+        makeResult();
         return;
     }
 
@@ -41,9 +45,6 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
         calculator.opperatorSelected = true;
         calculator.opperator = btn.textContent;
         result.textContent = calculator.firstNum + calculator.opperator;
-        
-
-        console.log(calculator.opperator);
         return;
     }
 
@@ -63,13 +64,22 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
         console.log(calculator.secondNum);
         return;
     }
-    console.log(btn.textContent)
+    console.log(btn.textContent);
 
     result.textContent += btn.textContent;
 }));
 
 
 // Operations
+
+function makeResult(){
+    if (!calculator.firstNum && !calculator.opperator && !calculator.secondNum){
+        return;
+    }
+    result.textContent = preview.textContent;
+    resetValues();
+    console.log(result.textContent);
+}
 
 function add(a,b){
     return a+b;
@@ -115,10 +125,6 @@ function operate(firstNum, secondNum, opperand){
 
 
 
-buttons.forEach( button => button.addEventListener("click", () => {
-    console.log(button.getAttribute("data-key"))
-
-}));
 
 window.addEventListener("keydown", pressButton);
 
@@ -154,9 +160,12 @@ function clear(){
     preview.textContent = "0";
     result.textContent = "0";
     calculator.opperatorSelected = false;
+}
+function resetValues(){
     calculator.firstNum = "";
     calculator.opperator = "";
     calculator.secondNum = "";
+    
 }
 
 window.addEventListener("keyup", removeTransition);
