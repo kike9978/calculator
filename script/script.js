@@ -66,7 +66,7 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
 
         //  Picking first opperand
         
-        if (!calculator.opperatorSelected){
+        if(!calculator.opperatorSelected){
             if(calculator.firstSelected){
                 return;
             }
