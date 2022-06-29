@@ -10,11 +10,13 @@ const clearBtn = document.querySelector("[data-btn=clear]");
 const calculator = {
     opperatorSelected: false,
     firstSelected: false,
+    equalPressed: false,
     firstNum: "",
     opperator: "",
     secondNum: "",
     preview: "",
     result: "",
+
 };
 
 clearBtn.addEventListener("click", clear);
@@ -67,9 +69,17 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
         //  Picking first opperand
         
         if(!calculator.opperatorSelected){
-            if(calculator.firstSelected){
-                return;
+
+            console.table(calculator);
+
+            // Set calcultor.firstnum to the new value if the equals button have already been pressed
+            if(calculator.equalPressed === true){
+                calculator.firstNum = "";
+                calculator.equalPressed = false;
             }
+            // if(calculator.firstSelected){
+            //     return;
+            // }
 
             calculator.firstNum += btn.textContent;
             calculator.result = String(calculator.firstNum);
@@ -99,12 +109,17 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
 // Operations
 
 function makeResult(){
-    if (!calculator.firstNum && !calculator.opperator && !calculator.secondNum){
+    if (!calculator.opperator && !calculator.secondNum){
         return;
-    }
+    };
+    calculator.equalPressed = true;
+    console.log(`${calculator.firstNum}, ${calculator.opperator}, ${calculator.secondNum}`)
+    console.log(`${!calculator.firstNum}, ${!calculator.opperator}, ${!calculator.secondNum}`)
+    // if()
     calculator.result = calculator.preview;
     result.textContent = calculator.result;
     preview.textContent = "0";
+    console.table(calculator);
     resetValues();
 
     // por aquí esta el bucle, creo
@@ -174,7 +189,7 @@ function pressButton(e){
     if (!btn) return;
 
     // Equals key behaviour
-    if (btn.getAttribute("data-key") === "13"){
+    if (btn.getAttribute("data-key") === "69"){
         makeResult();
         return;
     }
@@ -203,11 +218,16 @@ function resetValues(){
     calculator.preview = "";
     calculator.opperatorSelected = false;
     calculator.firstSelected = true;
+    // if(!isNaN(parseInt(calculator.result))){
+    //     console.log(!isNaN(parseInt(calculator.result)));
+    // }
     calculator.firstNum = parseInt(calculator.result);
+    console.table(calculator);
     calculator.opperator = "";
     calculator.secondNum = "";
-    console.table(calculator);
+    // Conflict when clearing values on equals return NaN on firstNum;
 }
+
 
 function clear(){
     resetValues();
@@ -216,7 +236,6 @@ function clear(){
     preview.textContent = "0";
     result.textContent = "0";
     calculator.firstSelected = false;
-    console.table(calculator);
 }
 
 // For clearing values on equals and when linking multiply operations
