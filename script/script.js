@@ -7,6 +7,9 @@ const clearBtn = document.querySelector("[data-btn=clear]");
 
 clearBtn.addEventListener("click", clear);
 
+let timesFirstNumSelected = 0;
+let bottonPressed = false;
+
 const calculator = {
     opperatorSelected: false,
     firstSelected: false,
@@ -68,6 +71,8 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
         //  Picking first opperand
         
         if (!calculator.opperatorSelected){
+            timesFirstNumSelected ++;
+            console.log({timesFirstNumSelected});
 
             calculator.firstNum += parseInt(btn.textContent);
             console.log(`Me acaban de guardar en el calculator y valgo: ${calculator["firstNum"]}`);
@@ -101,14 +106,18 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
 
 function makeResult(){
     if (!calculator.firstNum && !calculator.opperator && !calculator.secondNum){
-        console.log("los valores de calculator son trues");
         return;
     }
     calculator.result = calculator.preview;
     result.textContent = calculator.result;
     preview.textContent = "0";
     resetValues();
-    console.table(`Soy el calculator en el make result ${console.table(calculator)}`);
+    console.table(calculator);
+
+    // por aquí esta el bucle, creo
+    console.log("voy a volver a guardar el primer valor");
+    console.log(`Soy el calculator en el make result`);
+
 }
 
 function add(a,b){
@@ -166,21 +175,26 @@ function operate(firstNum, secondNum, opperand){
 window.addEventListener("keydown", pressButton);
 
 function pressButton(e){
+    if (e.repeat){
+        e.preventDefault();
+        return;
+    } 
+
     const btn = document.querySelector(`[data-key="${e.keyCode}"]`);
     if (!btn) return;
 
     // Equals key behaviour
     if (btn.getAttribute("data-key") === "13"){
-        console.table(`Soy el calculator despues en el key behaviour ${console.table(calculator)}`);
         makeResult();
         return;
     }
-
+    
     // Clear key behaviour
     if (btn.getAttribute("data-key") === "67"){
         clear();
         return;
     }
+    
     
     btn.classList.add("active");
     calculator.result += btn.textContent
@@ -188,6 +202,7 @@ function pressButton(e){
 };
 
 function removeTransition(e){
+    bottonPressed = false;
     const btn = document.querySelector(`[data-key="${e.keyCode}"]`);
     if (!btn) return;
     console.log(btn);
@@ -202,7 +217,8 @@ function clear(){
     preview.textContent = "0";
     result.textContent = "0";
     firstSelected = false
-    console.table(`Soy el calculator despues de clear ${console.table(calculator)}`);
+    console.log(`Soy el calculator despues de clear`);
+    console.table(calculator);
 }
 
 // For clearing values on equals and when linking multiply operations
@@ -214,7 +230,8 @@ function resetValues(){
     calculator.firstNum = parseInt(calculator.result);
     calculator.opperator = "";
     calculator.secondNum = 0;
-    console.table(`Soy el calculator despues de resetValues ${console.table(calculator)}`);
+    console.log(`Soy el calculator despues de resetValues`);
+    console.table(calculator);
 
 }
 
