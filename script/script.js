@@ -17,6 +17,8 @@ const calculator = {
     result: "",
 };
 
+console.table(calculator)
+
 buttons.forEach(btn => btn.addEventListener("click", () => {
 
     // Clear button behaviour
@@ -196,10 +198,11 @@ function removeTransition(e){
 function clear(){
     resetValues();
     calculator.result = "";
-    calculator.firstNum = "";
+    calculator.firstNum = 0;
     preview.textContent = "0";
     result.textContent = "0";
     firstSelected = false
+    console.table(`Soy el calculator despues de clear ${console.table(calculator)}`);
 }
 
 // For clearing values on equals and when linking multiply operations
@@ -210,7 +213,7 @@ function resetValues(){
     calculator.firstSelected = true;
     calculator.firstNum = parseInt(calculator.result);
     calculator.opperator = "";
-    calculator.secondNum = "";
+    calculator.secondNum = 0;
     console.table(`Soy el calculator despues de resetValues ${console.table(calculator)}`);
 
 }
