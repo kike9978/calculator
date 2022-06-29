@@ -9,13 +9,13 @@ clearBtn.addEventListener("click", clear);
 
 const calculator = {
     opperatorSelected: false,
+    firstSelected: false,
     firstNum: "",
     opperator: "",
     secondNum: "",
+    preview: "",
+    result: "",
 };
-
-
-
 
 buttons.forEach(btn => btn.addEventListener("click", () => {
 
@@ -27,48 +27,69 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
     // Equals button behaviour
     if (btn.getAttribute("data-btn") === "equals"){
 
-
-
         console.log(`Soy first num y : ${!calculator.firstNum}, yo opeartor y: ${!calculator.opperator} y yo el secondNum: ${!calculator.secondNum}`);
 
         makeResult();
         return;
     }
 
+    // Delete button behaviour
+
+    if (btn.getAttribute("data-btn") === "delete"){
+        deleteFromResult();
+        return
+    }
+
 
     // Operator buttons behaviour
 
-    if (btn.getAttribute("data-btn") === "opperator"){
+    if (btn.getAttribute("data-btn") === "opperator" && calculator.firstSelected){
         if(calculator.opperatorSelected){
             return;
         }
         calculator.opperatorSelected = true;
         calculator.opperator = btn.textContent;
-        result.textContent = calculator.firstNum + calculator.opperator;
+        calculator.result = calculator.firstNum + calculator.opperator;
+        result.textContent = calculator.result;
         return;
     }
 
+
+    // if (btn.getAttribute("data-btn") === "opperator" && btn.textContent === "xy"){
+    //     calculator.opperatorSelected = true;
+    //     calculator.opperator = btn.textContent;
+    //     result.textContent = calculator.firstNum + calculator.opperator;
+    //     return;
+    // }
+
     // Number buttons behaviour
     if(btn.getAttribute("data-btn") === "number"){
+
+        //  Picking first opperand
+        
         if (!calculator.opperatorSelected){
 
             calculator.firstNum += btn.textContent;
-            result.textContent = calculator.firstNum;
-            console.log(calculator.firstNum);
+            calculator.result = calculator.firstNum;
+            result.textContent = calculator.result;
+            calculator.firstSelected = true;
+
             return;
         }
 
-        calculator.secondNum += parseInt(btn.textContent);
-        result.textContent = calculator.firstNum + calculator.opperator + calculator.secondNum;
-        preview.textContent = operate(calculator.firstNum,calculator.secondNum,calculator.opperator);
-        console.log(calculator.secondNum);
+        // Picking second oppperand
+
+        calculator.secondNum += btn.textContent;
+        calculator.result = calculator.firstNum + calculator.opperator + calculator.secondNum;
+        result.textContent = calculator.result;
+        calculator.preview = operate(calculator.firstNum,calculator.secondNum,calculator.opperator);
+        preview.textContent = calculator.preview;
         return;
     }
     console.log(btn.textContent);
 
-    result.textContent += btn.textContent;
-}));
 
+}));
 
 // Operations
 
@@ -76,9 +97,11 @@ function makeResult(){
     if (!calculator.firstNum && !calculator.opperator && !calculator.secondNum){
         return;
     }
-    result.textContent = preview.textContent;
+    calculator.result = calculator.preview;
+    result.textContent = calculator.result;
+    preview.textContent = "0";
     resetValues();
-    console.log(result.textContent);
+    console.table(calculator);
 }
 
 function add(a,b){
@@ -98,10 +121,18 @@ function divide(a,b){
 }
 
 function pow(base, pow){
+    let result = base;
     for(let i=1; i<pow; i++){
-        base *= base;
+         result *= base;
     }
+    return result;
 }
+
+function deleteFromResult(){
+    calculator.result = calculator.result.slice(calculator.result.length);
+    result
+}
+
 
 function operate(firstNum, secondNum, opperand){
     if (opperand === "+"){
@@ -117,12 +148,11 @@ function operate(firstNum, secondNum, opperand){
         return divide(parseInt(firstNum), parseInt(secondNum));
     }
     if (opperand === "xy"){
+        console.log("hola");
         return pow(parseInt(firstNum), parseInt(secondNum));
     }
     
 }
-
-
 
 
 
@@ -141,7 +171,8 @@ function pressButton(e){
     }
     
     btn.classList.add("active");
-    result.textContent += btn.textContent
+    calculator.result += btn.textContent
+    result.textContent = calculator.result;
 };
 
 function removeTransition(e){
@@ -157,15 +188,19 @@ function registerOnPreview(){
 }
 
 function clear(){
+    calculator.result = "";
     preview.textContent = "0";
     result.textContent = "0";
-    calculator.opperatorSelected = false;
+    firstSelected = false
+    resetValues();
 }
 function resetValues(){
-    calculator.firstNum = "";
+    calculator.preview = "";
+    calculator.opperatorSelected = false;
+    calculator.firstSelected = true;
+    calculator.firstNum = calculator.result;
     calculator.opperator = "";
     calculator.secondNum = "";
-    
 }
 
 window.addEventListener("keyup", removeTransition);
