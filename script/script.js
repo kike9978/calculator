@@ -10,9 +10,9 @@ clearBtn.addEventListener("click", clear);
 const calculator = {
     opperatorSelected: false,
     firstSelected: false,
-    firstNum: "",
+    firstNum: 0,
     opperator: "",
-    secondNum: "",
+    secondNum: 0,
     preview: "",
     result: "",
 };
@@ -26,9 +26,7 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
 
     // Equals button behaviour
     if (btn.getAttribute("data-btn") === "equals"){
-
-        console.log(`Soy first num y : ${!calculator.firstNum}, yo opeartor y: ${!calculator.opperator} y yo el secondNum: ${!calculator.secondNum}`);
-
+        console.table(`Soy el calculator en el button behaviour ${console.table(calculator)}`);
         makeResult();
         return;
     }
@@ -69,7 +67,9 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
         
         if (!calculator.opperatorSelected){
 
-            calculator.firstNum += btn.textContent;
+            calculator.firstNum += parseInt(btn.textContent);
+            console.log(`Me acaban de guardar en el calculator y valgo: ${calculator["firstNum"]}`);
+            console.table(calculator);
             calculator.result = calculator.firstNum;
             result.textContent = calculator.result;
             calculator.firstSelected = true;
@@ -79,11 +79,12 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
 
         // Picking second oppperand
 
-        calculator.secondNum += btn.textContent;
+        calculator.secondNum += parseInt(btn.textContent);
         calculator.result = calculator.firstNum + calculator.opperator + calculator.secondNum;
         result.textContent = calculator.result;
         calculator.preview = operate(calculator.firstNum,calculator.secondNum,calculator.opperator);
         preview.textContent = calculator.preview;
+        console.table(`Soy el calculator después de guardar el segundo número ${console.table(calculator)}`);
         return;
     }
     console.log(btn.textContent);
@@ -91,17 +92,21 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
 
 }));
 
+
+
+
 // Operations
 
 function makeResult(){
     if (!calculator.firstNum && !calculator.opperator && !calculator.secondNum){
+        console.log("los valores de calculator son trues");
         return;
     }
     calculator.result = calculator.preview;
     result.textContent = calculator.result;
     preview.textContent = "0";
     resetValues();
-    console.table(calculator);
+    console.table(`Soy el calculator en el make result ${console.table(calculator)}`);
 }
 
 function add(a,b){
@@ -154,17 +159,22 @@ function operate(firstNum, secondNum, opperand){
     
 }
 
-
+// Keyboard input interaction
 
 window.addEventListener("keydown", pressButton);
 
 function pressButton(e){
     const btn = document.querySelector(`[data-key="${e.keyCode}"]`);
     if (!btn) return;
+
+    // Equals key behaviour
     if (btn.getAttribute("data-key") === "13"){
-        registerOnPreview();
+        console.table(`Soy el calculator despues en el key behaviour ${console.table(calculator)}`);
+        makeResult();
         return;
     }
+
+    // Clear key behaviour
     if (btn.getAttribute("data-key") === "67"){
         clear();
         return;
@@ -182,25 +192,27 @@ function removeTransition(e){
     btn.classList.remove("active");
 }
 
-function registerOnPreview(){
-    preview.textContent = result.textContent;
-    result.textContent = "0";
-}
 
 function clear(){
+    resetValues();
     calculator.result = "";
+    calculator.firstNum = "";
     preview.textContent = "0";
     result.textContent = "0";
     firstSelected = false
-    resetValues();
 }
+
+// For clearing values on equals and when linking multiply operations
+
 function resetValues(){
     calculator.preview = "";
     calculator.opperatorSelected = false;
     calculator.firstSelected = true;
-    calculator.firstNum = calculator.result;
+    calculator.firstNum = parseInt(calculator.result);
     calculator.opperator = "";
     calculator.secondNum = "";
+    console.table(`Soy el calculator despues de resetValues ${console.table(calculator)}`);
+
 }
 
 window.addEventListener("keyup", removeTransition);
