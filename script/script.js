@@ -13,14 +13,14 @@ let bottonPressed = false;
 const calculator = {
     opperatorSelected: false,
     firstSelected: false,
-    firstNum: 0,
+    firstNum: "",
     opperator: "",
-    secondNum: 0,
+    secondNum: "",
     preview: "",
     result: "",
 };
 
-console.table(calculator)
+console.table(calculator);
 
 buttons.forEach(btn => btn.addEventListener("click", () => {
 
@@ -71,13 +71,21 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
         //  Picking first opperand
         
         if (!calculator.opperatorSelected){
+            if(calculator.firstSelected){
+                return;
+            }
             timesFirstNumSelected ++;
             console.log({timesFirstNumSelected});
+            
+            console.log(`soy el calculator en el momento que están guardando mi primer número}`);
+            console.table(calculator);
 
-            calculator.firstNum += parseInt(btn.textContent);
+// Por aquí está el erroor!
+            calculator.firstNum += btn.textContent;
+
             console.log(`Me acaban de guardar en el calculator y valgo: ${calculator["firstNum"]}`);
             console.table(calculator);
-            calculator.result = calculator.firstNum;
+            calculator.result = String(calculator.firstNum);
             result.textContent = calculator.result;
             calculator.firstSelected = true;
 
@@ -86,7 +94,7 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
 
         // Picking second oppperand
 
-        calculator.secondNum += parseInt(btn.textContent);
+        calculator.secondNum += btn.textContent;
         calculator.result = calculator.firstNum + calculator.opperator + calculator.secondNum;
         result.textContent = calculator.result;
         calculator.preview = operate(calculator.firstNum,calculator.secondNum,calculator.opperator);
@@ -108,7 +116,11 @@ function makeResult(){
     if (!calculator.firstNum && !calculator.opperator && !calculator.secondNum){
         return;
     }
+    console.log("Soy el resultado antes que me den al preview")
+    console.table(calculator);
+    console.log("Soy el resultado después que me den al preview")
     calculator.result = calculator.preview;
+    console.table(calculator);
     result.textContent = calculator.result;
     preview.textContent = "0";
     resetValues();
@@ -216,7 +228,7 @@ function clear(){
     calculator.firstNum = 0;
     preview.textContent = "0";
     result.textContent = "0";
-    firstSelected = false
+    firstSelected = false;
     console.log(`Soy el calculator despues de clear`);
     console.table(calculator);
 }
