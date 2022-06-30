@@ -220,17 +220,9 @@ function pressButton(e) {
         return;
     }
     if (btn.getAttribute("data-btn") === "operator"){
-        if (calculator.operatorSelected) {
-            return;
-        }
-        calculator.operatorSelected = true;
-        calculator.operator = btn.textContent;
-        calculator.result = calculator.firstNum + calculator.operator;
-        result.textContent = calculator.result;
-        return;
+        
+        dialOperator(btn);
     }
-
-    console.log(btn.textContent);
     dialNumber(btn);
 };
 
