@@ -1,7 +1,6 @@
 const result = document.querySelector("[data-p=result]");
 const preview = document.querySelector("[data-p=preview]");
 const buttons = document.querySelectorAll("button");
-const clearBtn = document.querySelector("[data-btn=clear]");
 
 const calculator = {
     operatorSelected: false,
@@ -15,11 +14,12 @@ const calculator = {
     result: "",
 };
 
-// Clear button behaviour
-
-clearBtn.addEventListener("click", clear);
-
 buttons.forEach(btn => btn.addEventListener("click", () => {
+    
+    // Clear button behaviour
+    if (btn.getAttribute("data-btn") === "clear"){
+        clear();
+    }
 
     // Equals button behaviour
     if (btn.getAttribute("data-btn") === "equals") {
@@ -40,9 +40,10 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
 
         dialOperator(btn);
     }
-
+    
     // Number buttons behaviour
     if (btn.getAttribute("data-btn") === "number") {
+
         dialNumber(btn);
     }
 }));
@@ -78,7 +79,6 @@ function dialNumber(btn) {
 }
 
 function dialOperator(btn){
-
     if (calculator.operatorSelected) {
         return;
     }
@@ -103,7 +103,7 @@ function makeResult() {
     }
     if (operate(calculator.firstNum, calculator.secondNum, calculator.operator) === "cero"){
         clear();
-        result.textContent = "If you do that, the world will explode";
+        result.textContent = "Error!";
         return;
     }
 
@@ -131,10 +131,6 @@ function divide(a, b) {
     // Escape dividing by zero
     if (a === 0) {
         console.log(a);
-
-        // result.textContent = "If you do that the world will explode";
-        console.log("If you do that, the world will explode");
-        console.log(result.textContent);
         return "cero";
     };
 
@@ -212,11 +208,14 @@ function pressButton(e) {
         btn.classList.add("active");
         return;
     }
-    if (btn.getAttribute("data-btn") === "operator"){
+    if (btn.getAttribute("data-btn") === "operator" && calculator.firstSelected){
+        console.table(calculator);
         dialOperator(btn);
         return;
     }
-    dialNumber(btn);
+    if (btn.getAttribute("data-btn") === "number") {
+        dialNumber(btn);
+    }
 };
 
 window.addEventListener("keyup", removeTransition);
