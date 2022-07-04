@@ -30,7 +30,7 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
     // Delete button behaviour
 
     if (btn.getAttribute("data-btn") === "delete") {
-        deleteFromResult();
+        deleteInputs();
         return
     }
 
@@ -151,9 +151,31 @@ function pow(base, pow) {
     return result;
 }
 
-function deleteFromResult() {
-    calculator.result = calculator.result.slice(calculator.result.length);
-    result
+function deleteInputs() {
+    if(calculator.secondSelected){
+        console.log(!calculator.secondNum);
+        
+        console.table(calculator);
+        calculator.secondNum = calculator.secondNum.toString().substring(0, calculator.secondNum.toString().length - 1);
+        calculator.result = calculator.firstNum + calculator.operator + calculator.secondNum;
+        result.textContent = calculator.result;
+        calculator.preview = operate(calculator.firstNum, calculator.secondNum, calculator.operator);
+        preview.textContent = calculator.preview;
+        console.table(calculator);
+        if(!calculator.secondNum){
+            console.log("hola caveza de cola");
+            calculator.result = calculator.firstNum + calculator.operator;
+            calculator.secondSelected = false;
+            calculator.preview = "0"
+            preview.textContent = calculator.preview;
+            return;
+        }
+    return;
+    }
+    // if (){
+
+    // }
+
 }
 
 function operate(firstNum, secondNum, operand) {
@@ -195,19 +217,26 @@ function pressButton(e) {
     // with chrome inputing the focused element
     // This can be avoided with: 
     // document.activeElement.blur();
+    btn.classList.add("active");
 
     if (btn.getAttribute("data-key") === "69") {
         makeResult();
-        btn.classList.add("active");
         return;
     }
 
     // Clear key behaviour
     if (btn.getAttribute("data-key") === "67") {
         clear();
-        btn.classList.add("active");
         return;
     }
+    if (btn.getAttribute("data-key") === "8"){
+        console.log("delete");
+        deleteInputs();
+        return;
+
+    }
+
+    
     if (btn.getAttribute("data-btn") === "operator" && calculator.firstSelected){
         console.table(calculator);
         dialOperator(btn);

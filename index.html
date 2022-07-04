@@ -45,10 +45,18 @@
                 <!-- The equals key was supposed to be the enter key but got problems
                      with chrome inputing the focused element -->
                 <button class="btn-special" data-key="69" data-btn="equals">=</button>
-                <button class="btn-special" data-key="191" data-btn="operator">÷</button>    
+                <button class="btn-special" data-key="191" data-btn="operator">÷</button>
             </div>
         </div>
-        <footer><p>Copyright © 2022 <a href="https://github.com/kike9978/calculator" target="_blank">Kike Mendoza</a> 💃🦆</p></footer>
+        <footer>
+            <p>Copyright © 2022 <a href="https://github.com/kike9978/calculator" target="_blank">Kike Mendoza</a> 💃🦆
+            </p>
+        </footer>
     </main>
+    <script>
+        var str = 132401.3;
+        var str = str.toString().substring(0, str.toString().length - 1);
+        console.log(parseFloat(str));
+    </script>
 
 </body>
