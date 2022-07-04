@@ -6,6 +6,7 @@ const clearBtn = document.querySelector("[data-btn=clear]");
 const calculator = {
     operatorSelected: false,
     firstSelected: false,
+    secondSelected: false,
     equalPressed: false,
     firstNum: "",
     operator: "",
@@ -14,14 +15,11 @@ const calculator = {
     result: "",
 };
 
+// Clear button behaviour
+
 clearBtn.addEventListener("click", clear);
 
 buttons.forEach(btn => btn.addEventListener("click", () => {
-
-    // Clear button behaviour
-    if (btn.getAttribute("data-btn") === "clear") {
-        return;
-    };
 
     // Equals button behaviour
     if (btn.getAttribute("data-btn") === "equals") {
@@ -36,29 +34,12 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
         return
     }
 
-
     // Operator buttons behaviour
 
     if (btn.getAttribute("data-btn") === "operator" && calculator.firstSelected) {
 
         dialOperator(btn);
-        // if (calculator.operatorSelected) {
-        //     return;
-        // }
-        // calculator.operatorSelected = true;
-        // calculator.operator = btn.textContent;
-        // calculator.result = calculator.firstNum + calculator.operator;
-        // result.textContent = calculator.result;
-        // return;
     }
-
-
-    // if (btn.getAttribute("data-btn") === "operator" && btn.textContent === "xy"){
-    //     calculator.operatorSelected = true;
-    //     calculator.operator = btn.textContent;
-    //     result.textContent = calculator.firstNum + calculator.operator;
-    //     return;
-    // }
 
     // Number buttons behaviour
     if (btn.getAttribute("data-btn") === "number") {
@@ -67,11 +48,9 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
 }));
 
 function dialNumber(btn) {
+
     //  Picking first operand
-
     if (!calculator.operatorSelected) {
-
-        console.table(calculator);
 
         // Set calcultor.firstnum to the new value if the 
         // equals button have already been pressed
@@ -89,16 +68,17 @@ function dialNumber(btn) {
     }
 
     // Picking second oppperand
-
     calculator.secondNum += btn.textContent;
     calculator.result = calculator.firstNum + calculator.operator + calculator.secondNum;
     result.textContent = calculator.result;
     calculator.preview = operate(calculator.firstNum, calculator.secondNum, calculator.operator);
     preview.textContent = calculator.preview;
+    calculator.secondSelected = true;
     return;
 }
 
 function dialOperator(btn){
+
     if (calculator.operatorSelected) {
         return;
     }
@@ -118,6 +98,14 @@ function makeResult() {
     if (!calculator.operator && !calculator.secondNum) {
         return;
     };
+    if(!calculator.secondSelected){
+        return;
+    }
+    if (operate(calculator.firstNum, calculator.secondNum, calculator.operator) === "cero"){
+        clear();
+        result.textContent = "If you do that, the world will explode";
+        return;
+    }
 
     calculator.equalPressed = true;
     calculator.result = calculator.preview;
@@ -142,17 +130,21 @@ function divide(a, b) {
 
     // Escape dividing by zero
     if (a === 0) {
-        clear();
-        result.textContent = "If you do that the world will explode";
-        return
+        console.log(a);
+
+        // result.textContent = "If you do that the world will explode";
+        console.log("If you do that, the world will explode");
+        console.log(result.textContent);
+        return "cero";
     };
 
-    let result = a / b;
-    if (result % 1 === 0) {
-        return result;
+    let res = a / b;
+    if (res % 1 === 0) {
+        result.textContent;
+        return res;
     }
 
-    return parseFloat(result.toFixed(4));
+    return parseFloat(res.toFixed(4));
 }
 
 function pow(base, pow) {
@@ -193,7 +185,8 @@ window.addEventListener("keydown", pressButton);
 
 function pressButton(e) {
     if (e.repeat) {
-        // This method prevents doing the rest of the action of the keydown multiple times if you hold it
+        // This method prevents doing the rest of the action of the keydown 
+        // multiple times if you hold it
         e.preventDefault();
         return;
     }
@@ -220,8 +213,8 @@ function pressButton(e) {
         return;
     }
     if (btn.getAttribute("data-btn") === "operator"){
-        
         dialOperator(btn);
+        return;
     }
     dialNumber(btn);
 };
@@ -241,13 +234,12 @@ function resetValues() {
     calculator.preview = "";
     calculator.operatorSelected = false;
     calculator.firstSelected = true;
-    // if(!isNaN(parseInt(calculator.result))){
-    //     console.log(!isNaN(parseInt(calculator.result)));
-    // }
-    calculator.firstNum = parseInt(calculator.result);
+    console.log("dentro del reset value");
     console.table(calculator);
+    calculator.firstNum = parseInt(calculator.result);
     calculator.operator = "";
     calculator.secondNum = "";
+    calculator.secondSelected = false;
 
     // Conflict when clearing values on equals return NaN on firstNum;
 }
@@ -259,4 +251,7 @@ function clear() {
     preview.textContent = "0";
     result.textContent = "0";
     calculator.firstSelected = false;
+    calculator.equalPressed = false;
+    console.table(calculator);
+    console.log(result.textContent);
 }
