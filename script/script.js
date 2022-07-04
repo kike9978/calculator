@@ -153,15 +153,11 @@ function pow(base, pow) {
 
 function deleteInputs() {
     if(calculator.secondSelected){
-        console.log(!calculator.secondNum);
-        
-        console.table(calculator);
         calculator.secondNum = calculator.secondNum.toString().substring(0, calculator.secondNum.toString().length - 1);
         calculator.result = calculator.firstNum + calculator.operator + calculator.secondNum;
         result.textContent = calculator.result;
         calculator.preview = operate(calculator.firstNum, calculator.secondNum, calculator.operator);
         preview.textContent = calculator.preview;
-        console.table(calculator);
         if(!calculator.secondNum){
             console.log("hola caveza de cola");
             calculator.result = calculator.firstNum + calculator.operator;
@@ -172,9 +168,15 @@ function deleteInputs() {
         }
     return;
     }
-    // if (){
+    if (calculator.operatorSelected){
+        calculator.operator = calculator.operator.substring(0, calculator.operator.toString().length - 1);
+        calculator.operatorSelected = false;
+        calculator.result = calculator.firstNum;
+        result.textContent = calculator.result;
+        return;
 
-    // }
+
+    }
 
 }
 
