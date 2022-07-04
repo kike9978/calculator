@@ -158,6 +158,7 @@ function deleteInputs() {
         result.textContent = calculator.result;
         calculator.preview = operate(calculator.firstNum, calculator.secondNum, calculator.operator);
         preview.textContent = calculator.preview;
+
         if(!calculator.secondNum){
             console.log("hola caveza de cola");
             calculator.result = calculator.firstNum + calculator.operator;
@@ -174,9 +175,19 @@ function deleteInputs() {
         calculator.result = calculator.firstNum;
         result.textContent = calculator.result;
         return;
-
-
     }
+    if (calculator.firstSelected){
+        calculator.firstNum = calculator.firstNum.toString().substring(0, calculator.firstNum.toString().length - 1);
+        calculator.result = calculator.firstNum;
+        result.textContent = calculator.result;
+
+        if(!calculator.firstNum){
+            clear();
+            return;
+        }
+        return;
+    }
+
 
 }
 
