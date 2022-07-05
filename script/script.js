@@ -190,12 +190,8 @@ function multiply(a, b) {
 
 function divide(a, b) {
 
-    // Escape dividing by zero
-    if (a === 0) {
 
-        return "cero";
-    };
-
+    
     let res = a / b;
     if (res % 1 === 0) {
         result.textContent;
@@ -223,7 +219,9 @@ function deleteInputs() {
         if ((calculator.secondNum % 1 === 0)) {
             calculator.secondPeriodPressed = false;
         }
-        calculator.secondNum = calculator.secondNum.toString().substring(0, calculator.secondNum.toString().length - 1);
+        calculator.secondNum = calculator.secondNum.toString()
+                .substring(0, calculator.secondNum.toString()
+                .length - 1);
         calculator.result = calculator.firstNum + calculator.operator + calculator.secondNum;
         result.textContent = calculator.result;
         calculator.preview = operate(calculator.firstNum, calculator.secondNum, calculator.operator);
@@ -256,7 +254,9 @@ function deleteInputs() {
         if ((calculator.firstNum % 1 === 0)) {
             calculator.firstPeriodPressed = false;
         }
-        calculator.firstNum = calculator.firstNum.toString().substring(0, calculator.firstNum.toString().length - 1);
+        calculator.firstNum = calculator.firstNum.toString()
+                .substring(0, calculator.firstNum
+                .toString().length - 1);
         calculator.result = calculator.firstNum;
         result.textContent = calculator.result;
 
@@ -282,6 +282,13 @@ function operate(firstNum, secondNum, operand) {
         return parseFloat(multiply(parseFloat(firstNum), parseFloat(secondNum)).toFixed(4));
     }
     if (operand === "÷") {
+
+        // Escape dividing by zero
+
+        if(secondNum === "0"){
+            return "cero";
+        }
+        
         return parseFloat(divide(parseFloat(firstNum), parseFloat(secondNum)).toFixed(4));
     }
     if (operand === "xy") {
