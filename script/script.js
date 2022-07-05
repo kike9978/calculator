@@ -18,6 +18,30 @@ const calculator = {
 
 buttons.forEach(btn => btn.addEventListener("click", () => {
 
+    // Contrary button behaviout
+
+    if (btn.getAttribute("data-btn") === "contrary") {
+        if (calculator.secondSelected) {
+            calculator.secondNum *= (-1);
+
+            calculator.result = calculator.firstNum + calculator.operator + calculator.secondNum;
+            result.textContent = calculator.result;
+            calculator.preview = operate(calculator.firstNum, calculator.secondNum, calculator.operator);
+            preview.textContent = calculator.preview;
+            calculator.secondSelected = true;
+
+            return;
+        }
+        if(calculator.operatorSelected){
+            return;
+        }
+
+        calculator.firstNum *= (-1);
+        calculator.result = String(calculator.firstNum);
+        result.textContent = calculator.result;
+        return;
+    }
+
     // Period button behaviour
 
     if (btn.getAttribute("data-btn") === "period") {
@@ -101,7 +125,7 @@ function dialOperator(btn) {
     return;
 };
 
-function dialPeriod(){
+function dialPeriod() {
     if (calculator.secondPeriodPressed) {
         return;
     }
