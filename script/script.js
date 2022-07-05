@@ -367,6 +367,8 @@ function resetValues() {
     calculator.operator = "";
     calculator.secondNum = "";
     calculator.secondSelected = false;
+    calculator.firstPeriodPressed = false;
+    calculator.secondPeriodPressed = false;
 }
 
 function clear() {
@@ -375,8 +377,6 @@ function clear() {
     calculator.firstNum = "";
     preview.textContent = "0";
     result.textContent = "0";
-    calculator.firstPeriodPressed = false;
-    calculator.secondPeriodPressed = false;
     calculator.firstSelected = false;
     calculator.equalPressed = false;
 }
