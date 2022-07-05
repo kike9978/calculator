@@ -38,8 +38,14 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
 
     if (btn.getAttribute("data-btn") === "operator" && calculator.firstSelected) {
 
+        if(calculator.secondNum){
+            makeResult();
+        }
         dialOperator(btn);
     }
+
+
+
     
     // Number buttons behaviour
     if (btn.getAttribute("data-btn") === "number") {
@@ -160,7 +166,6 @@ function deleteInputs() {
         preview.textContent = calculator.preview;
 
         if(!calculator.secondNum){
-            console.log("hola caveza de cola");
             calculator.result = calculator.firstNum + calculator.operator;
             calculator.secondSelected = false;
             calculator.preview = "0"
@@ -170,7 +175,7 @@ function deleteInputs() {
     return;
     }
     if (calculator.operatorSelected){
-        calculator.operator = calculator.operator.substring(0, calculator.operator.toString().length - 1);
+        calculator.operator = "";
         calculator.operatorSelected = false;
         calculator.result = calculator.firstNum;
         result.textContent = calculator.result;
