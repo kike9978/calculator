@@ -7,6 +7,8 @@ const calculator = {
     firstSelected: false,
     secondSelected: false,
     equalPressed: false,
+    firstPeriodPressed: false,
+    secondPeriodPressed: false,
     firstNum: "",
     operator: "",
     secondNum: "",
@@ -15,9 +17,16 @@ const calculator = {
 };
 
 buttons.forEach(btn => btn.addEventListener("click", () => {
-    
+
+    // Period button behaviour
+
+    if (btn.getAttribute("data-btn") === "period") {
+        dialPeriod();
+    }
+
+
     // Clear button behaviour
-    if (btn.getAttribute("data-btn") === "clear"){
+    if (btn.getAttribute("data-btn") === "clear") {
         clear();
     }
 
@@ -38,15 +47,12 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
 
     if (btn.getAttribute("data-btn") === "operator" && calculator.firstSelected) {
 
-        if(calculator.secondNum){
+        if (calculator.secondNum) {
             makeResult();
         }
         dialOperator(btn);
     }
 
-
-
-    
     // Number buttons behaviour
     if (btn.getAttribute("data-btn") === "number") {
 
@@ -84,7 +90,7 @@ function dialNumber(btn) {
     return;
 }
 
-function dialOperator(btn){
+function dialOperator(btn) {
     if (calculator.operatorSelected) {
         return;
     }
@@ -95,6 +101,32 @@ function dialOperator(btn){
     return;
 };
 
+function dialPeriod(){
+    if (calculator.secondPeriodPressed) {
+        return;
+    }
+    if (calculator.operatorSelected) {
+        calculator.secondPeriodPressed = true;
+        calculator.secondNum += ".";
+        calculator.result = calculator.firstNum + calculator.operator + calculator.secondNum;
+        result.textContent = calculator.result;
+        calculator.preview = operate(calculator.firstNum, calculator.secondNum, calculator.operator);
+        preview.textContent = calculator.preview;
+        calculator.secondSelected = true;
+        return;
+    }
+
+    if (calculator.firstPeriodPressed) {
+        return;
+    }
+    calculator.firstPeriodPressed = true;
+    calculator.firstNum += ".";
+    calculator.result = String(calculator.firstNum);
+    result.textContent = calculator.result;
+    calculator.firstSelected = true;
+    return;
+}
+
 
 
 // Operations
@@ -104,10 +136,10 @@ function makeResult() {
     if (!calculator.operator && !calculator.secondNum) {
         return;
     };
-    if(!calculator.secondSelected){
+    if (!calculator.secondSelected) {
         return;
     }
-    if (operate(calculator.firstNum, calculator.secondNum, calculator.operator) === "cero"){
+    if (operate(calculator.firstNum, calculator.secondNum, calculator.operator) === "cero") {
         clear();
         result.textContent = "Error!";
         return;
@@ -136,7 +168,7 @@ function divide(a, b) {
 
     // Escape dividing by zero
     if (a === 0) {
-        console.log(a);
+
         return "cero";
     };
 
@@ -158,35 +190,53 @@ function pow(base, pow) {
 }
 
 function deleteInputs() {
-    if(calculator.secondSelected){
+
+    // Deletes from second operand
+
+    if (calculator.secondSelected) {
+
+        // Checks if second number has period and avoids stacking them
+        if ((calculator.secondNum % 1 === 0)) {
+            calculator.secondPeriodPressed = false;
+        }
         calculator.secondNum = calculator.secondNum.toString().substring(0, calculator.secondNum.toString().length - 1);
         calculator.result = calculator.firstNum + calculator.operator + calculator.secondNum;
         result.textContent = calculator.result;
         calculator.preview = operate(calculator.firstNum, calculator.secondNum, calculator.operator);
         preview.textContent = calculator.preview;
 
-        if(!calculator.secondNum){
+        if (!calculator.secondNum) {
             calculator.result = calculator.firstNum + calculator.operator;
             calculator.secondSelected = false;
             calculator.preview = "0"
             preview.textContent = calculator.preview;
             return;
         }
-    return;
+        return;
     }
-    if (calculator.operatorSelected){
+    // Deletes operator
+
+    if (calculator.operatorSelected) {
         calculator.operator = "";
         calculator.operatorSelected = false;
         calculator.result = calculator.firstNum;
         result.textContent = calculator.result;
         return;
     }
-    if (calculator.firstSelected){
+    // Deletes first selected  
+
+    if (calculator.firstSelected) {
+
+        // Checks if first number has period and avoids stacking periods
+
+        if ((calculator.firstNum % 1 === 0)) {
+            calculator.firstPeriodPressed = false;
+        }
         calculator.firstNum = calculator.firstNum.toString().substring(0, calculator.firstNum.toString().length - 1);
         calculator.result = calculator.firstNum;
         result.textContent = calculator.result;
 
-        if(!calculator.firstNum){
+        if (!calculator.firstNum) {
             clear();
             return;
         }
@@ -198,19 +248,20 @@ function deleteInputs() {
 
 function operate(firstNum, secondNum, operand) {
     if (operand === "+") {
-        return add(parseInt(firstNum), parseInt(secondNum));
+
+        return parseFloat(add(parseFloat(firstNum), parseFloat(secondNum)).toFixed(4));
     }
     if (operand === "−") {
-        return substract(parseInt(firstNum), parseInt(secondNum));
+        return parseFloat(substract(parseFloat(firstNum), parseFloat(secondNum)).toFixed(4));
     }
     if (operand === "×") {
-        return multiply(parseInt(firstNum), parseInt(secondNum));
+        return parseFloat(multiply(parseFloat(firstNum), parseFloat(secondNum)).toFixed(4));
     }
     if (operand === "÷") {
-        return divide(parseInt(firstNum), parseInt(secondNum));
+        return parseFloat(divide(parseFloat(firstNum), parseFloat(secondNum)).toFixed(4));
     }
     if (operand === "xy") {
-        return pow(parseInt(firstNum), parseInt(secondNum));
+        return parseFloat(pow(parseFloat(firstNum), parseFloat(secondNum)).toFixed(4));
     }
 
 }
@@ -237,6 +288,10 @@ function pressButton(e) {
     // document.activeElement.blur();
     btn.classList.add("active");
 
+    if (btn.getAttribute("data-btn") === "period") {
+        dialPeriod();
+    }
+
     if (btn.getAttribute("data-key") === "69") {
         makeResult();
         return;
@@ -247,16 +302,18 @@ function pressButton(e) {
         clear();
         return;
     }
-    if (btn.getAttribute("data-key") === "8"){
-        console.log("delete");
+    if (btn.getAttribute("data-key") === "8") {
+
         deleteInputs();
         return;
 
     }
 
-    
-    if (btn.getAttribute("data-btn") === "operator" && calculator.firstSelected){
-        console.table(calculator);
+
+    if (btn.getAttribute("data-btn") === "operator" && calculator.firstSelected) {
+        if (calculator.secondNum) {
+            makeResult();
+        }
         dialOperator(btn);
         return;
     }
@@ -264,6 +321,8 @@ function pressButton(e) {
         dialNumber(btn);
     }
 };
+
+// Returns the button styles after keyup
 
 window.addEventListener("keyup", removeTransition);
 function removeTransition(e) {
@@ -280,14 +339,10 @@ function resetValues() {
     calculator.preview = "";
     calculator.operatorSelected = false;
     calculator.firstSelected = true;
-    console.log("dentro del reset value");
-    console.table(calculator);
-    calculator.firstNum = parseInt(calculator.result);
+    calculator.firstNum = parseFloat(calculator.result);
     calculator.operator = "";
     calculator.secondNum = "";
     calculator.secondSelected = false;
-
-    // Conflict when clearing values on equals return NaN on firstNum;
 }
 
 function clear() {
@@ -296,8 +351,8 @@ function clear() {
     calculator.firstNum = "";
     preview.textContent = "0";
     result.textContent = "0";
+    calculator.firstPeriodPressed = false;
+    calculator.secondPeriodPressed = false;
     calculator.firstSelected = false;
     calculator.equalPressed = false;
-    console.table(calculator);
-    console.log(result.textContent);
 }
